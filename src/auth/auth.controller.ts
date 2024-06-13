@@ -1,8 +1,10 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
-import { UpdateAuthDto } from './dto/update-usuario.dto';
 import { LoginUserDto } from './dto/login-usuario.dto';
+import { Auth } from './decorators/auth.decorator';
+import { Role } from '@prisma/client';
+
 
 @Controller('auth')
 export class AuthController {
@@ -14,9 +16,17 @@ export class AuthController {
     return this.authService.create(createUsuarioDto);
   }
 
-
   @Post('login')
   login(@Body() loginUserDto : LoginUserDto ) {
     return this.authService.login(loginUserDto);
+  }
+
+
+  // ENDPOINT DE PRUEBA DE AUTENTICACIÓN
+
+  @Get('prueba')
+  @Auth(Role.ADMINISTRADOR)
+  todosUsuarios() {
+    return this.authService.todosUsuarios();
   }
 }

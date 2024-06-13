@@ -20,6 +20,10 @@ export class AuthService {
   ) {
   }
 
+  todosUsuarios() {
+    return 'Todos los usuarios'
+  }
+
   async create(createUsuarioDto: CreateUsuarioDto) {
     try {
       const { email, password, ...rest } = createUsuarioDto;
