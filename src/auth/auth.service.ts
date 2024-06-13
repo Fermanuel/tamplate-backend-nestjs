@@ -70,6 +70,15 @@ export class AuthService {
         where: {
           email
         },
+        select: {
+          id: true,
+          email: true,
+          password: true,
+          userName: true,
+          apellido: true,
+          roles: true,
+          IsActive: true
+        }
       });
 
       if (!user) {
