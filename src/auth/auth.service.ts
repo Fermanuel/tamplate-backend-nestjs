@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
-import { UpdateAuthDto } from './dto/update-usuario.dto';
 import { LoginUserDto } from './dto/login-usuario.dto';
 import { DbService } from 'src/db/db.service';
 
@@ -60,24 +59,45 @@ export class AuthService {
     }
   }
 
-  login(loginUserDto: LoginUserDto) {
-    return `This action returns all auth`;
-  }
+  async login(loginUserDto: LoginUserDto) {
 
-  findAll() {
-    return `This action returns all auth`;
-  }
+    try {
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
+      const { email, password } = loginUserDto;
 
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
+      // Buscar usuario en la base de datos
+      const user = await this.dbService.user.findUnique({
+        where: {
+          email
+        },
+      });
 
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+      if (!user) {
+        throw new BadRequestException('Usuario no encontrado');
+      }
+
+      // Verificar la contraseña
+      const passwordMatch = bcrypt.compareSync(password, user.password);
+
+      if (!passwordMatch) {
+        throw new BadRequestException('Contraseña incorrecta');
+      }
+
+      // Excluir el campo password del resultado
+      const { password: _, ...userData } = user;
+
+      return {
+        data: userData,
+        token: this.getJwtToken({ id: user.id }),
+      };
+
+
+    } catch (error) {
+
+      this.logger.error(error);
+      this.handleDBError(error);
+
+    }
   }
   
   //* GENERACION DE TOKEN
