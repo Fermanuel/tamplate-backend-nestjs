@@ -22,10 +22,10 @@ model User {
   id        String   @id @default(uuid())
   email     String   @unique @db.VarChar(100)
   userName  String   @db.VarChar(100)
-  apellido  String?  @db.VarChar(100) // Añadir el campo apellido
+  apellido  String?  @db.VarChar(100)
   password  String   @db.VarChar(200)
   IsActive  Boolean  @default(true)
-  roles     Role[]   @default([USUARIO]) // puede tener varios roles
+  roles     Role[]   @default([USUARIO])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
