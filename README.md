@@ -19,6 +19,15 @@
 
 - Ejecuta el proyecto con `npm run start:dev`
 
+
+## Funcionalidades
+
+- Creacion de Usuarios
+- Autenticacion mediante JWT
+- contraseña encriptada en la base de datos
+- Autorizacion mediante Roles
+- Refresh Token
+
 ## License
 
-Nest is [MIT licensed](LICENSE).
+Sistema de autenticacion [MIT licensed](LICENSE).
