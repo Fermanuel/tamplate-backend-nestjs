@@ -3,7 +3,8 @@ import { AuthService } from './auth.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { LoginUserDto } from './dto/login-usuario.dto';
 import { Auth } from './decorators/auth.decorator';
-import { Role } from '@prisma/client';
+import { Role, User } from '@prisma/client';
+import { GetUser } from './decorators/get-user.decorator';
 
 
 @Controller('auth')
@@ -21,12 +22,24 @@ export class AuthController {
     return this.authService.login(loginUserDto);
   }
 
+  // REFRESH TOKEN
+  @Get('check-status-user')
+  @Auth()
+  checkAuthStatus(
+    @GetUser() user: User
+  ) {
+    return this.authService.checkAuthStatus(user);
+  }
+
 
   // ENDPOINT DE PRUEBA DE AUTENTICACIÓN
 
   @Get('prueba')
   @Auth(Role.ADMINISTRADOR)
-  todosUsuarios() {
-    return this.authService.todosUsuarios();
+  todosUsuarios(@GetUser() user: User  ){
+    return {
+      Ok: true,
+      user
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, Logger, UnauthorizedException } from '@nestjs/common';
 
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { LoginUserDto } from './dto/login-usuario.dto';
@@ -8,6 +8,7 @@ import * as bcrypt from 'bcrypt';
 
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './interface/jwt-paylot.interface';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -86,14 +87,14 @@ export class AuthService {
       });
 
       if (!user) {
-        throw new BadRequestException('Usuario no encontrado');
+        throw new UnauthorizedException('Usuario no encontrado');
       }
 
       // Verificar la contraseña
       const passwordMatch = bcrypt.compareSync(password, user.password);
 
       if (!passwordMatch) {
-        throw new BadRequestException('Contraseña incorrecta');
+        throw new UnauthorizedException('Contraseña incorrecta');
       }
 
       // Excluir el campo password del resultado
@@ -110,6 +111,13 @@ export class AuthService {
       this.logger.error(error);
       this.handleDBError(error);
 
+    }
+  }
+
+  async checkAuthStatus(user: User) {
+    return {
+      ...user,
+      token: this.getJwtToken({ id: user.id })
     }
   }
   
