@@ -36,7 +36,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         }
 
         if(!user.IsActive) {
-            throw new UnauthorizedException('Usuario no activo')
+            throw new UnauthorizedException('Usuario suspendido, contacte al administrador')
         }
         
         return user;
