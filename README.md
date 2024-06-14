@@ -7,8 +7,8 @@
 
 ## Para utilizar el tamplate
 
-- Realiza un `git clone` en tu terminal y guarda el repositorio en el direcotrio que gustes.
-- Elimina el archivo .git de la carpeta para reiniciar el el historial de git y puedas utilizar el tamplate.
+- Realiza un `git clone` en tu terminal y guarda el repositorio en el directorio que gustes.
+- Elimina el archivo .git de la carpeta para reiniciar el historial de git y puedas utilizar el tamplate de forma libre.
 - Ejecuta el `docker compose up -d` para levantar la base de datos.
 - Instala las dependencias `npm i`.
 - Configura la cadena de conexion de prisma ORM en el archivo `.env`
@@ -18,6 +18,7 @@
 > Ten en cuanta las relaciones y la tabla Usuarios de tu base de datos antes de crear las migraciones.
 
 - Ejecuta el proyecto con `npm run start:dev`
+- relaiza pruebas de que todo funcione
 
 
 ## Funcionalidades
