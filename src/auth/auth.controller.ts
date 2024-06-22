@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { LoginUserDto } from './dto/login-usuario.dto';
@@ -12,6 +12,8 @@ export class AuthController {
   
   constructor(private readonly authService: AuthService) {}
 
+  // solo el administrador puede registrar usuarios
+  @Auth(Role.ADMINISTRADOR)
   @Post('registro')
   createUser(@Body() createUsuarioDto: CreateUsuarioDto) {
     return this.authService.create(createUsuarioDto);
@@ -24,7 +26,7 @@ export class AuthController {
 
   // REFRESH TOKEN
   @Get('check-status-user')
-  @Auth()
+  @Auth(Role.USUARIO, Role.ADMINISTRADOR)
   checkAuthStatus(
     @GetUser() user: User
   ) {

@@ -4,6 +4,7 @@ import { ConfigService } from "@nestjs/config";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { DbService } from "src/db/db.service";
 import { JwtPayload } from "../interface/jwt-paylot.interface";
+import { User } from "@prisma/client";
 
 
 @Injectable()
@@ -21,7 +22,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
     
     
-    async validate(payload: JwtPayload) {
+    async validate(payload: JwtPayload): Promise<User> {
         
         const { id } = payload;
 
